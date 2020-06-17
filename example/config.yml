@@ -1,0 +1,17 @@
+sep : "\t" # The separator character in your csv file.
+taxa_column : "genus_silva" # The column of your csv file containing the taxa to search for.
+taxa_field : "name" # "name" or "taxid", depending on the content of the taxa_column. If "taxid", make sure that these are valid GBIF taxids (e.g. 2433670 for Enhydra lutris).
+#taxa_rank : "PHYLUM" # The rank of the taxa in the taxa_column. Comment the line if non applicable.
+country : "NO" # The 2-letter country code (as per ISO-3166-1) of the country in which the occurrence was recorded. See here http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.
+geometry : "POLYGON((16.7871094 70.3778539,
+2.5488281 62.1449760,
+3.6035156 57.1839019,
+13.0957031 55.4290135,
+19.5996094 61.8561488,
+23.1152344 65.2198939,
+33.3984375 70.0805622,
+29.6191406 71.6359929,
+22.7636719 71.4411709,
+16.8750000 70.3778539,
+16.7871094 70.3778539))" # Search for occurrences inside this polygon. Make sure that the first and last coordinates are the same. If country is set, geometry is not used.
+# You can use an online tool like https://www.keene.edu/campus/maps/tool/ to build the polygon of your dreams.
