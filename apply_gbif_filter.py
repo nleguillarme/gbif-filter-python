@@ -131,10 +131,10 @@ if __name__ == "__main__":
 
     if args.tag:
         df_taxa["gbif_filter_tag"] = tags
-        logger.info("Write filtered data to filtered.csv")
-        df_taxa.to_csv(args.OUTPUT, sep=cfg["sep"], index=False)
+        logger.info("Write filtered data to {}".format(args.OUTPUT))
+        df_taxa.to_csv(args.OUTPUT, sep=cfg["sep"], na_rep="NA", index=False)
     else:
         keep = [x == True for x in tags]
         filtered_df = df_taxa[keep]
-        logger.info("Write filtered data to filtered.csv")
-        filtered_df.to_csv(args.OUTPUT, sep=cfg["sep"], index=False)
+        logger.info("Write filtered data to {}".format(args.OUTPUT))
+        filtered_df.to_csv(args.OUTPUT, sep=cfg["sep"], na_rep="NA", index=False)
