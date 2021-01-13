@@ -1,8 +1,13 @@
 sep : "\t" # The separator character in your csv file.
 taxa_column : "genus_silva" # The column of your csv file containing the taxa to search for.
 taxa_field : "name" # "name" or "taxid", depending on the content of the taxa_column. If "taxid", make sure that these are valid GBIF taxids (e.g. 2433670 for Enhydra lutris).
-#taxa_rank : "PHYLUM" # The rank of the taxa in the taxa_column. Comment the line if non applicable.
-country : "NO" # The 2-letter country code (as per ISO-3166-1) of the country in which the occurrence was recorded. See here http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.
+
+#rank_column : "rank" # The column of your csv file containing the ranks of the taxa to search for.
+#taxa_rank : "PHYLUM" # The rank of the taxa in the taxa_column. If rank_column is set, taxa_rank is not used.
+
+taxa_kingdom : "Chromista" # Used when resolving taxon names. Limit the search to the specified kingdom.
+
+#country : "NO" # The 2-letter country code (as per ISO-3166-1) of the country in which the occurrence was recorded. See here http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.
 geometry : "POLYGON((16.7871094 70.3778539,
 2.5488281 62.1449760,
 3.6035156 57.1839019,

@@ -38,18 +38,25 @@ def parse_conf_file(path):
     return None
 
 
-def get_taxid(name, rank, db_prefix, logger):
-    logger.info("Look for id of taxon {} in GBIF Backbone Taxonomy".format(name))
+def get_taxid(name, rank, kingdom, db_prefix, logger):
+    logger.info(
+        f"Look for id of taxon {name} with rank {rank} in GBIF Backbone Taxonomy"
+    )
 
     match = pygbif.species.name_backbone(
-        name=name, rank=rank, strict=True, verbose=False
+        name=name, rank=rank, kingdom=kingdom, strict=True, verbose=False
     )
     if match["matchType"] == "EXACT":
-        id = match["usageKey"]
+        if match["synonym"]:
+            id = match["acceptedUsageKey"]
+            logger.info(f"Taxon {name} is synonym. Found accepted taxid {id}")
+        else:
+            id = match["usageKey"]
         taxid = TaxId(db_prefix, id)
+        logger.info("Found exact match for taxon {} with id {}".format(name, taxid))
         return taxid
     else:
-        logger.error("No match for {} {} : {}".format(rank, name, match))
+        logger.error("No match for taxon {} : {}".format(name, match))
         return None
 
 
@@ -76,37 +83,45 @@ if __name__ == "__main__":
     cfg = parse_conf_file(args.CONFIG)
 
     db_prefix = "GBIF:"
+
     geometry = None
     country = cfg["country"] if "country" in cfg else None
     if not country:
         geometry = cfg["geometry"] if "geometry" in cfg else None
-    rank = cfg["taxa_rank"] if "taxa_rank" in cfg else None
+    zone_str = f"country {country}" if country else "POLYGON"
+
+    kingdom = cfg["taxa_kingdom"] if "taxa_kingdom" in cfg else None
+
+    rank_column = cfg["rank_column"] if "rank_column" in cfg else None
+    if not rank_column:
+        taxa_rank = cfg["taxa_rank"] if "taxa_rank" in cfg else None
+    taxa_column = cfg["taxa_column"]
 
     # Call processing engine constructors
     occ = OccurrenceEngine(source=GbifAPI())
 
     # Read input data
-    df_taxa = pd.read_csv(
-        args.INPUT, sep=cfg["sep"], dtype={cfg["taxa_column"]: "object"}
-    )
-    # df_taxa = df_taxa.dropna(subset=[cfg["taxa_column"]])
-
-    tags = [None] * df_taxa.shape[0]
+    usecols = [taxa_column, rank_column] if rank_column else [taxa_column]
+    dtype = {}
+    for col in usecols:
+        dtype[col] = "object"
+    df_taxa = pd.read_csv(args.INPUT, sep=cfg["sep"], dtype=dtype)
 
     id_cache = {}
     occ_cache = {}
+    tags = [None] * df_taxa.shape[0]
 
-    to_keep = []
     for index, row in df_taxa.iterrows():
 
-        taxon_info = row[cfg["taxa_column"]]
+        taxon_info = row[taxa_column]
         if pd.isna(taxon_info):
             continue
+        taxon_rank = str(row[rank_column]).upper() if rank_column else taxa_rank
 
         # If the taxa column contains taxa names, try to get taxid in GBIF Backbone Taxonomy
         if cfg["taxa_field"] == "name":
             if taxon_info not in id_cache:
-                taxid = get_taxid(taxon_info, rank, db_prefix, logger)
+                taxid = get_taxid(taxon_info, taxon_rank, kingdom, db_prefix, logger)
                 id_cache[taxon_info] = taxid
                 if not taxid:
                     continue
@@ -119,11 +134,10 @@ if __name__ == "__main__":
 
         if taxid:
             if str(taxid) not in occ_cache:
-                logger.info("Look for occurrences of taxon {}".format(taxid))
-
+                logger.info(f"Look for occurrences of taxon {taxid} in {zone_str}")
                 occ_cache[str(taxid)] = occ.has_occurrences(taxid, geometry, country)
                 if not occ_cache[str(taxid)]:
-                    logger.info("Taxon {} not found in zone of interest".format(taxid))
+                    logger.info(f"Taxon {taxid} not found in zone of interest")
 
             # If an occurrence has been found for the taxon of interest,
             # keep the corresponding row of the input df
