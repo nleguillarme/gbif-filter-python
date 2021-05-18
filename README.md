@@ -1,5 +1,5 @@
 # gbif-filter-python
-A python script to filter a list of taxa based on their spatial distribution according to GBIF occurrences database
+A python script to filter a list of taxa based on their spatial distribution and habitat according to GBIF occurrences database
 
 ## Install
 
@@ -11,4 +11,4 @@ pip install -r requirements.txt
 
 ## Run example
 
-`python apply_gbif_filter.py --tag example/config.yml example/motu_table_sample.csv  example/output.csv`
+`python apply_gbif_filter.py --tag example/config.yml example/table_annot_olig01.csv  example/output.csv`
