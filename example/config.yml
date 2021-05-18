@@ -1,24 +1,9 @@
-sep : "\t" # The separator character in your csv file.
-name_column : "genus_silva" # The column of your csv file containing the taxon names.
-taxid_column : "GBIF_key_silva" # The column of your csv file containing the taxon ids.
-
-#rank_column : "rank" # The column of your csv file containing the ranks of the taxa to search for.
-#taxa_rank : "PHYLUM" # The rank of the taxa in the taxa_column. If rank_column is set, taxa_rank is not used.
-
-resolve_to_rank : "genus"
-
-taxa_kingdom : "Chromista" # Used when resolving taxon names. Limit the search to the specified kingdom.
-
-#country : "NO" # The 2-letter country code (as per ISO-3166-1) of the country in which the occurrence was recorded. See here http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.
-geometry : "POLYGON((16.7871094 70.3778539,
-2.5488281 62.1449760,
-3.6035156 57.1839019,
-13.0957031 55.4290135,
-19.5996094 61.8561488,
-23.1152344 65.2198939,
-33.3984375 70.0805622,
-29.6191406 71.6359929,
-22.7636719 71.4411709,
-16.8750000 70.3778539,
-16.7871094 70.3778539))" # Search for occurrences inside this polygon. Make sure that the first and last coordinates are the same. If country is set, geometry is not used.
+sep : ";" # The separator character in your csv file.
+name_column : "taxa_to_filter" # The column of your csv file containing the taxa to search for.
+taxa_kingdom : "Animalia" # Used when resolving taxon names. Limit the search to the specified kingdom.
+resolve_to_rank : "SPECIES" # One of SPECIES, GENUS (optional)
+habitat : "TERRESTRIAL" # One of TERRESTRIAL, FRESHWATER, MARINE (optional)
+#country : "CA" # The 2-letter country code (as per ISO-3166-1) of the country in which the occurrence was recorded. See here http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2.
+geometry : "POLYGON((-75.61464 62.21534,-78.7656 60.5815,-77.61418 56.70173,-79.45098 54.67159,-87.65469 55.59753,-93.43596 57.88686,-95.31212 60.04932,-129.56689 53.81444,-123.45217 45.93347,-123.91768 40.93663,-118.11493 34.16381,-111.4253 31.22765,-100.18644 27.59835,-93.76801 30.41739,-83.49371 29.99948,-76.59172 36.77585,-70.69512 42.58472,-65.44863 46.67466,-65.75653 49.56489,-57.72713 47.71301,-52.93458 47.64121,-57.82193 54.45649,-64.46424 60.35065,-67.60679 59.05623,-75.61464 62.21534))"
+ # Search for occurrences inside this polygon. Make sure that the first and last coordinates are the same. If country is set, geometry is not used.
 # You can use an online tool like https://www.keene.edu/campus/maps/tool/ to build the polygon of your dreams.
