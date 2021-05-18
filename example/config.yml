@@ -1,9 +1,11 @@
 sep : "\t" # The separator character in your csv file.
-taxa_column : "genus_silva" # The column of your csv file containing the taxa to search for.
-taxa_field : "name" # "name" or "taxid", depending on the content of the taxa_column. If "taxid", make sure that these are valid GBIF taxids (e.g. 2433670 for Enhydra lutris).
+name_column : "genus_silva" # The column of your csv file containing the taxon names.
+taxid_column : "GBIF_key_silva" # The column of your csv file containing the taxon ids.
 
 #rank_column : "rank" # The column of your csv file containing the ranks of the taxa to search for.
 #taxa_rank : "PHYLUM" # The rank of the taxa in the taxa_column. If rank_column is set, taxa_rank is not used.
+
+resolve_to_rank : "genus"
 
 taxa_kingdom : "Chromista" # Used when resolving taxon names. Limit the search to the specified kingdom.
 
