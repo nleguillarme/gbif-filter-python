@@ -4,7 +4,7 @@ A python script to filter a list of taxa based on their spatial distribution and
 ## Install
 
 ```python
-git clone git@github.com:nleguillarme/gbif-filter-python.git
+git clone https://github.com/nleguillarme/gbif-filter-python.git
 cd gbif-filter-python
 pip install -r requirements.txt
 ```
